@@ -1,0 +1,64 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="isw-datatable-behavior.html">
+<link rel="import" href="isw-datatable-styles.html">
+<link rel="import" href="isw-datatable-th.html">
+<link rel="import" href="isw-datatable-pagination.html">
+
+<!--
+### isw-datatable
+
+Displays a datatable an provides information which and how data should be displayed.
+
+@demo demo/index.html
+-->
+
+<dom-module id="isw-datatable">
+	<template>
+		<style include="isw-datatable-styles"></style>
+
+		<table>
+			<thead>
+				<template is="dom-repeat" items="[[columns]]" as="column">
+					<isw-datatable-th
+							label="[[_columnLabel(column, labels)]]"
+							column="[[column]]"
+							sort-column="[[sortColumn]]"
+							sort-order="[[sortOrder]]"></isw-datatable-th>
+				</template>
+			</thead>
+
+			<tbody>
+				<template is="dom-repeat" items="[[data]]" as="row">
+					<tr>
+						<template is="dom-repeat" items="[[columns]]" as="column">
+							<td>[[_fieldValue(row, column)]]</td>
+						</template>
+					</tr>
+				</template>
+			</tbody>
+		</table>
+
+		<isw-datatable-pagination
+				row-count="[[rowCount]]"
+				rows-per-page="[[rowsPerPage]]"
+				page="[[page]]"
+				first-row="[[firstRow]]"
+				last-row="[[lastRow]]"></isw-datatable-pagination>
+	</template>
+
+	<script>
+		Polymer( {
+			is: 'isw-datatable',
+			behaviors: [ iswDatatableBehavior ],
+
+			_columnLabel: function( column, labels ) {
+				return ( labels[ column ] ) ? labels[ column ] : column;
+			},
+
+			_fieldValue: function( row, column ) {
+				return row[ column ];
+			}
+		} );
+	</script>
+</dom-module>

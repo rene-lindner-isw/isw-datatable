@@ -1,0 +1,39 @@
+<dom-module id="isw-datatable-styles">
+	<template>
+		<style>
+			:host {
+				display: inline-block;
+				min-width: 100%;
+			}
+
+			table {
+				min-width: 100%;
+				border-spacing: 0;
+			}
+
+			tr:hover {
+				background: var(--paper-grey-200);
+			}
+
+			th:first-child, td:first-child {
+				padding: 4px 28px 4px 24px;
+			}
+
+			th, td {
+				padding: 4px 28px;
+				box-sizing: border-box;
+			}
+
+			th:last-child, td:last-child {
+				padding: 5px 24px 4px 28px;
+			}
+
+			td {
+				height: 48px;
+				border-top: 1px solid #DDDDDD; /* 12% Black */
+				font-size: 13px;
+				color: rgba(0, 0, 0, 0.87);
+			}
+		</style>
+	</template>
+</dom-module>

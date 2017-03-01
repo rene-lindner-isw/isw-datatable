@@ -1,0 +1,86 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+
+<!--
+### isw-datatable-th
+-->
+
+<dom-module id="isw-datatable-th">
+	<template>
+		<style>
+			:host {
+				display: table-cell;
+				box-sizing: border-box;
+				height: 56px;
+				padding: 4px 28px;
+				color: rgba(0, 0, 0, 0.54);
+				font-size: 12px;
+				text-align: left;
+				white-space: nowrap;
+				cursor: pointer;
+				vertical-align: inherit;
+
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+
+			:host:first-child {
+				padding: 4px 28px 4px 24px;
+			}
+
+			:host:last-child {
+				padding: 5px 24px 4px 28px;
+			}
+		</style>
+
+		<span>[[label]]</span>
+		<iron-icon icon="[[_iconIcon(sortColumn, sortOrder, column)]]"></iron-icon>
+	</template>
+
+	<script>
+		Polymer( {
+			is: 'isw-datatable-th',
+
+			properties: {
+				label: {
+					type: String,
+					notify: true
+				},
+				column: {
+					type: String,
+					notify: true
+				},
+				sortColumn: {
+					type: String,
+					notify: true
+				},
+				sortOrder: {
+					type: String,
+					notify: true
+				}
+			},
+
+			listeners: {
+				'tap': '_updateSorting'
+			},
+
+			_updateSorting: function() {
+				this.fire( 'update-sorting', { column: this.column } );
+			},
+
+			_iconIcon: function ( sortColumn, sortOrder, column ) {
+				if( sortColumn == column ) {
+					return ( sortOrder == 'ASC' ) ? 'arrow-downward' : 'arrow-upward';
+				} else {
+					return '';
+				}
+			}
+		} );
+	</script>
+</dom-module>

@@ -1,0 +1,183 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+	/**
+	 * ### isw-datatable-behavior
+	 *
+	 * @polymerBehavior
+	 */
+
+	iswDatatableBehavior = {
+		properties: {
+			/**
+			 * String array of the column names.
+			 */
+			columns: {
+				type: Array,
+				notify: true,
+				value: []
+			},
+			/**
+			 * Column labels for the table header.
+			 */
+			labels: {
+				type: Object,
+				notify: true,
+				value: {}
+			},
+			/**
+			 * Data to be displayed.
+			 */
+			data: {
+				type: Array,
+				notify: true,
+				value: []
+			},
+			/**
+			 * Number of all rows (not only the one displayed).
+			 */
+			rowCount: {
+				type: Number,
+				notify: true,
+				value: 0
+			},
+			/**
+			 * The column for sorting.
+			 */
+			sortColumn: {
+				type: String,
+				notify: true,
+				readOnly: true,
+				value: ''
+			},
+			/**
+			 * The order for sorting ('ASC' or 'DESC').
+			 */
+			sortOrder: {
+				type: String,
+				notify: true,
+				readOnly: true,
+				value: 'ASC'
+			},
+			/**
+			 * How many rows should be loaded.
+			 */
+			rowsPerPage: {
+				type: Number,
+				notify: true,
+				readOnly: true,
+				value: 25
+			},
+			/**
+			 * The current page.
+			 */
+			page: {
+				type: Number,
+				notify: true,
+				readOnly: true,
+				value: 1
+			},
+			/**
+			 * Number of the pages (rowCount/rowsPerPage).
+			 */
+			pages: {
+				type: Number,
+				computed: '_computePages(rowCount, rowsPerPage)',
+				notify: true
+			},
+			/**
+			 * The first row that should be loaded.
+			 */
+			firstRow: {
+				type: Number,
+				computed: '_computeFirstRow(page, rowsPerPage)',
+				notify: true
+			},
+			/**
+			 * The last row that should be loaded.
+			 */
+			lastRow: {
+				type: Number,
+				computed: '_computeLastRow(page, rowsPerPage, pages, rowCount)',
+				notify: true
+			}
+		},
+
+		listeners: {
+			'update-sorting': '_updateSorting',
+			'update-rows-per-page': '_updateRowsPerPage',
+			'prev-page': '_prevPage',
+			'next-page': '_nextPage'
+		},
+
+		/**
+		 * Jumps to the first page.
+		 */
+		firstPage: function() {
+			this._setPage( 1 );
+		},
+
+		_prevPage: function() {
+			if( this.page > 1 ) {
+				this._setPage( this.page - 1 );
+				this.fire( 'page-changed' );
+				this.fire( 'parameter-changed' );
+			}
+		},
+
+		_nextPage: function() {
+			if( this.page < this.pages ) {
+				this._setPage( this.page + 1 );
+				this.fire( 'page-changed' );
+				this.fire( 'parameter-changed' );
+			}
+		},
+
+		_updateRowsPerPage: function( event, detail ) {
+			this.updateRowsPerPage( detail.rowsPerPage );
+			this.fire( 'rows-per-page-changed' );
+			this.fire( 'parameter-changed' );
+		},
+
+		updateRowsPerPage: function( rowsPerPage ) {
+			// TODO: Calculate the new page based on firstRow.
+			this.firstPage();
+			this._setRowsPerPage( rowsPerPage );
+		},
+
+		_updateSorting: function( event, detail ) {
+			this.updateSorting( detail.column );
+			this.fire( 'sorting-changed' );
+			this.fire( 'parameter-changed' );
+		},
+
+		updateSorting: function( column ) {
+			// Check if the taped column is the current.
+			if( this.sortColumn != column )
+			{
+				// If not, set it and reset order to default.
+				this._setSortColumn( column );
+				this._setSortOrder( 'ASC' );
+			}
+			else
+			{
+				// If it is the current, invert sort order.
+				this._setSortOrder( ( this.sortOrder == 'ASC' ) ? 'DESC' : 'ASC' );
+			}
+			// Jump to first page.
+			this.firstPage();
+		},
+
+		_computePages: function( rowCount, rowsPerPage ) {
+			return Math.ceil( rowCount / rowsPerPage );
+		},
+
+		_computeFirstRow: function( page, rowsPerPage ) {
+			return ( page - 1 ) * rowsPerPage + 1;
+		},
+
+		_computeLastRow: function( page, rowsPerPage, pages, rowCount ) {
+			return ( page == pages ) ? rowCount : page * rowsPerPage;
+		}
+	};
+</script>

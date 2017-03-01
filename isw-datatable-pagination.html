@@ -1,0 +1,108 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+
+<link rel="import" href="isw-datatable-behavior.html">
+
+<!--
+### isw-datatable-pagination
+-->
+
+<dom-module id="isw-datatable-pagination">
+	<template>
+		<style>
+			:host {
+				@apply(--layout-horizontal);
+				@apply(--layout-center);
+				height: 56px;
+				border-top: 1px solid #DDDDDD; /* 12% Black */
+				font-size: 12px;
+				color: rgba(0, 0, 0, .54);
+			}
+
+			.flex {
+				@apply(--layout-flex);
+			}
+
+			paper-dropdown-menu {
+				width: 70px;
+				margin-top: 2px;
+				vertical-align: middle;
+				--paper-input-container-underline: {
+					display: none;
+				};
+				--paper-input-container-input: {
+					text-align: right;
+					font-size: 12px;
+					color: rgba(0, 0, 0, .54);
+				};
+				--paper-dropdown-menu-icon: {
+					color: rgba(0, 0, 0, .54);
+				};
+				margin-right: 18px;
+			}
+		</style>
+
+		<div class="flex"></div>
+		<div>Rows per page:</div>
+
+		<paper-dropdown-menu vertical-align="bottom" no-label-float>
+			<paper-listbox id="rowsListbox"
+					class="dropdown-content"
+					selected="[[rowsPerPage]]"
+					attr-for-selected="value"
+					on-selected-changed="_updateRowsPerPage">
+
+				<paper-item value="10">10</paper-item>
+				<paper-item value="25">25</paper-item>
+				<paper-item value="50">50</paper-item>
+				<paper-item value="100">100</paper-item>
+			</paper-listbox>
+		</paper-dropdown-menu>
+
+		<div>[[firstRow]]-[[lastRow]] of [[rowCount]]</div>
+		<paper-icon-button icon="chevron-left" on-tap="_prevPage"></paper-icon-button>
+		<paper-icon-button icon="chevron-right" on-tap="_nextPage"></paper-icon-button>
+	</template>
+
+	<script>
+		Polymer( {
+			is: 'isw-datatable-pagination',
+			properties: {
+				rowCount: {
+					type: Number,
+					notify: true
+				},
+				rowsPerPage: {
+					type: Number,
+					notify: true
+				},
+				firstRow: {
+					type: Number,
+					notify: true
+				},
+				lastRow: {
+					type: Number,
+					notify: true
+				}
+			},
+
+			_updateRowsPerPage: function() {
+				this.fire( 'update-rows-per-page', { rowsPerPage: this.$.rowsListbox.selected } );
+			},
+
+			_prevPage: function() {
+				this.fire( 'prev-page' );
+			},
+
+			_nextPage: function() {
+				this.fire( 'next-page' );
+			}
+		} );
+	</script>
+</dom-module>

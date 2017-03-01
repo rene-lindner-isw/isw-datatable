@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+	<title>isw-datatable</title>
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+	<link rel="import" href="../../polymer/polymer.html">
+	<link rel="import" href="../../paper-styles/demo-pages.html">
+
+	<link rel="import" href="../isw-datatable.html">
+</head>
+
+<body unresolved>
+<dom-module id="demo-element">
+	<template>
+		<isw-datatable columns="[[columns]]"
+				labels="[[labels]]"
+				data="[[data]]"
+				row-count="[[rowCount]]"
+				sort-column="{{sortColumn}}"
+				sort-order="{{sortOrder}}"
+				rows-per-page="{{rowsPerPage}}"
+				page="{{page}}"
+				first-row="{{firstRow}}"
+				last-row="{{lastRow}}"
+				on-parameter-changed="_reload"></isw-datatable>
+
+		<div>
+			<h1>Datatable feedback:</h1>
+			<p>sortColumn: [[sortColumn]]</p>
+			<p>sortOrder: [[sortOrder]]</p>
+			<p>rowsPerPage: [[rowsPerPage]]</p>
+			<p>page: [[page]]</p>
+			<p>firstRow: [[firstRow]]</p>
+			<p>lastRow: [[lastRow]]</p>
+		</div>
+	</template>
+
+	<script>
+		HTMLImports.whenReady( function() {
+			Polymer( {
+				is: 'demo-element',
+
+				ready: function() {
+					this.columns = [ 'columna', 'columnb', 'columnc', 'columnd' ];
+					this.labels = {
+						'columna': 'Column A',
+						'columnb': 'Column B',
+						'columnc': 'Column C',
+						'columnd': 'Column D'
+					};
+					this.rowCount = 230;
+					this.data = [
+						{
+							'columna': 'fjdaslöf',
+							'columnb': 'dfasdfasdfl',
+							'columnc': 'fdfadfadfasdf',
+							'columnd': 'dfasdfasdfl'
+						},
+						{
+							'columna': 'hgfhfgdfdssfsffg',
+							'columnb': 'fdsgfdgsfgs',
+							'columnc': 'dfsfsdfs',
+							'columnd': 'hgfjhjgfjghjfh'
+						},
+						{
+							'columna': 'hgfhfgdfdssfsffg',
+							'columnb': 'fdsgfdgsfgs',
+							'columnc': 'dfsfsdfs',
+							'columnd': 'hgfjhjgfjghjfh'
+						},
+						{
+							'columna': 'hgfhfgdfdssfsffg',
+							'columnb': 'fdsgfdgsfgs',
+							'columnc': 'dfsfsdfs',
+							'columnd': 'hgfjhjgfjghjfh'
+						},
+						{
+							'columna': 'hgfhfgdfdssfsffg',
+							'columnb': 'fdsgfdgsfgs',
+							'columnc': 'dfsfsdfs',
+							'columnd': 'hgfjhjgfjghjfh'
+						},
+						{
+							'columna': 'hgfhfgdfdssfsffg',
+							'columnb': 'fdsgfdgsfgs',
+							'columnc': 'dfsfsdfs',
+							'columnd': 'hgfjhjgfjghjfh'
+						},
+						{
+							'columna': 'hgfhfgdfdssfsffg',
+							'columnb': 'fdsgfdgsfgs',
+							'columnc': 'dfsfsdfs',
+							'columnd': 'hgfjhjgfjghjfh'
+						}
+					];
+				},
+
+				_reload: function() {
+					console.log( 'Reload Data.' );
+				}
+			} );
+		} );
+	</script>
+</dom-module>
+
+<demo-element></demo-element>
+</body>
+</html>
