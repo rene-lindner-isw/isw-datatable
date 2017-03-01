@@ -8,6 +8,31 @@
 	 */
 
 	iswDatatableBehavior = {
+
+		/**
+		 * Fired if something changed that needs the data to update.
+		 *
+		 * @event parameter-changed
+		 */
+
+		/**
+		 * The current page has changed.
+		 *
+		 * @event page-changed
+		 */
+
+		/**
+		 * The rows per page has changed.
+		 *
+		 * @event rows-per-page-changed
+		 */
+
+		/**
+		 * The sorting has changed.
+		 *
+		 * @event sorting-changed
+		 */
+
 		properties: {
 			/**
 			 * String array of the column names.
@@ -134,29 +159,18 @@
 		},
 
 		_updateRowsPerPage: function( event, detail ) {
-			this.updateRowsPerPage( detail.rowsPerPage );
+			this.firstPage();
+			this._setRowsPerPage( detail.rowsPerPage );
 			this.fire( 'rows-per-page-changed' );
 			this.fire( 'parameter-changed' );
 		},
 
-		updateRowsPerPage: function( rowsPerPage ) {
-			// TODO: Calculate the new page based on firstRow.
-			this.firstPage();
-			this._setRowsPerPage( rowsPerPage );
-		},
-
 		_updateSorting: function( event, detail ) {
-			this.updateSorting( detail.column );
-			this.fire( 'sorting-changed' );
-			this.fire( 'parameter-changed' );
-		},
-
-		updateSorting: function( column ) {
 			// Check if the taped column is the current.
-			if( this.sortColumn != column )
+			if( this.sortColumn != detail.column )
 			{
 				// If not, set it and reset order to default.
-				this._setSortColumn( column );
+				this._setSortColumn( detail.column );
 				this._setSortOrder( 'ASC' );
 			}
 			else
@@ -166,6 +180,8 @@
 			}
 			// Jump to first page.
 			this.firstPage();
+			this.fire( 'sorting-changed' );
+			this.fire( 'parameter-changed' );
 		},
 
 		_computePages: function( rowCount, rowsPerPage ) {
