@@ -8,7 +8,59 @@
 <!--
 ### isw-datatable
 
-Displays a datatable an provides information which and how data should be displayed.
+Material Design Polymer Datatable.
+
+All Data actions (filter, sorting, limit) must be provided from an extern source (e.g. server-side).
+
+The feedback from the datatable descripes what data has to be loaded.
+
+    <template>
+        <iron-ajax id="ajax"
+                url="/datasource/"
+                handle-as="json"
+                on-response="_handleResponse"></iron-ajax>
+        <isw-datatable columns="[[columns]]"
+                labels="[[labels]]"
+                data="[[data]]"
+                row-count="[[rowCount]]"
+                sort-column="{{sortColumn}}"
+                sort-order="{{sortOrder}}"
+                rows-per-page="{{rowsPerPage}}"
+                page="{{page}}"
+                first-row="{{firstRow}}"
+                last-row="{{lastRow}}"
+                on-parameter-changed="_reload"></isw-datatable>
+    </template>
+    <script>
+        Polymer( {
+            ready: function() {
+                this.columns = [ 'dessert', 'calories', 'fat', 'carbs', 'protein', 'sodium', 'calcium', 'iron' ];
+                this.labels = {
+                    'dessert': 'Dessert (100g serving)',
+                    'calories': 'Calories',
+                    'fat': 'Fat (g)',
+                    'carbs': 'Carbs (g)',
+                    'protein': 'Protein (g)',
+                    'sodium': 'Sodium (mg)',
+                    'calcium': 'Calcium (%)',
+                    'iron': 'Iron (%)'
+                };
+            },
+            _reload: function() {
+                this.$.ajax.params = {
+                    sortColumn: this.sortColumn,
+                    sortOrder: this.sortOrder,
+                    rowsPerPage: this.rowsPerPage,
+                    firstRow: this.firstRow
+                };
+                this.$.ajax.generateRequest();
+            },
+            _handleResponse: function() {
+                this.data = this.$.ajax.lastResponse.data;
+                this.rowCount = this.$.ajax.lastResponse.rowCount;
+            }
+        } );
+    </script>
 
 @demo demo/index.html
 -->
