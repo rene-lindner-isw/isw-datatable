@@ -16,6 +16,7 @@
 	<template>
 		<isw-datatable columns="[[columns]]"
 				labels="[[labels]]"
+				hidden-columns="[[hiddenColumns]]"
 				data="[[data]]"
 				row-count="[[rowCount]]"
 				sort-column="{{sortColumn}}"
@@ -53,6 +54,16 @@
 						'sodium': 'Sodium (mg)',
 						'calcium': 'Calcium (%)',
 						'iron': 'Iron (%)'
+					};
+					this.hiddenColumns = {
+						'dessert': false,
+						'calories': false,
+						'fat': false,
+						'carbs': false,
+						'protein': false,
+						'sodium': false,
+						'calcium': false,
+						'iron': false
 					};
 					this.rowCount = 376;
 					this.data = [

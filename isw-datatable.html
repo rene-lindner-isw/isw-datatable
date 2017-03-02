@@ -76,7 +76,8 @@ The feedback from the datatable descripes what data has to be loaded.
 							label="[[_columnLabel(column, labels)]]"
 							column="[[column]]"
 							sort-column="[[sortColumn]]"
-							sort-order="[[sortOrder]]"></isw-datatable-th>
+							sort-order="[[sortOrder]]"
+							hidden="[[_columnHidden(column, hiddenColumns)]]"></isw-datatable-th>
 				</template>
 			</thead>
 
@@ -84,7 +85,7 @@ The feedback from the datatable descripes what data has to be loaded.
 				<template is="dom-repeat" items="[[data]]" as="row">
 					<tr>
 						<template is="dom-repeat" items="[[columns]]" as="column">
-							<td>[[_fieldValue(row, column)]]</td>
+							<td hidden="[[_columnHidden(column, hiddenColumns)]]">[[_fieldValue(row, column)]]</td>
 						</template>
 					</tr>
 				</template>
@@ -106,6 +107,10 @@ The feedback from the datatable descripes what data has to be loaded.
 
 			_columnLabel: function( column, labels ) {
 				return ( labels[ column ] ) ? labels[ column ] : column;
+			},
+
+			_columnHidden: function( column, hiddenColumns ) {
+				return ( hiddenColumns[ column ] );
 			},
 
 			_fieldValue: function( row, column ) {
