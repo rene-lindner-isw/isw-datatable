@@ -140,7 +140,8 @@
 			'update-sorting': '_updateSorting',
 			'update-rows-per-page': '_updateRowsPerPage',
 			'prev-page': '_prevPage',
-			'next-page': '_nextPage'
+			'next-page': '_nextPage',
+			'pages-changed': '_pagesChanged'
 		},
 
 		/**
@@ -193,7 +194,8 @@
 		},
 
 		_computePages: function( rowCount, rowsPerPage ) {
-			return Math.ceil( rowCount / rowsPerPage );
+			// Number of pages is number of rows / rows per page, but minimum 1.
+			return ( rowCount > 0 ) ? Math.ceil( rowCount / rowsPerPage ) : 1;
 		},
 
 		_computeFirstRow: function( page, rowsPerPage ) {
@@ -202,6 +204,18 @@
 
 		_computeLastRow: function( page, rowsPerPage, pages, rowCount ) {
 			return ( page == pages ) ? rowCount : page * rowsPerPage;
+		},
+
+		/**
+		 * If the number of pages have changed,
+		 * it must be checked if the current page is still in range.
+		 * @private
+		 */
+		_pagesChanged: function() {
+			if( this.page > this.pages ) {
+				// If the current page is outside, jump to last page.
+				this._setPage( this.pages );
+			}
 		}
 	};
 </script>
